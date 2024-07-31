@@ -64,7 +64,7 @@ export default function Modal({ newPos, onAdd }: Props) {
                     <hr className="mb-3 mt-2" />
                     <div className="my-2 flex justify-between items-center">
                         <span>Pos.</span>
-                        <input type="number" className="border-2 rounded-lg ms-2 p-1" {...form.register("pos", {
+                        <input type="text" className="border-2 rounded-lg ms-2 p-1" {...form.register("pos", {
                             required: false,
                             setValueAs: (v) => parseFloat(v)
                         })} />
@@ -72,7 +72,7 @@ export default function Modal({ newPos, onAdd }: Props) {
 
                     <div className="my-2 flex justify-between items-center">
                         <span>Anzahl</span>
-                        <input type="number" className="border-2 rounded-lg ms-2 p-1" {...form.register("hours", {
+                        <input type="text" className="border-2 rounded-lg ms-2 p-1" {...form.register("hours", {
                             required: false,
                             setValueAs: (v) => parseFloat(v)
                         })} />
@@ -95,7 +95,7 @@ export default function Modal({ newPos, onAdd }: Props) {
 
                     <div className="my-2 flex justify-between items-center">
                         <span>Einzelpreis</span>
-                        <input type="number" className="border-2 rounded-lg ms-2 p-1" {...form.register("unitPrice", {
+                        <input type="text" className="border-2 rounded-lg ms-2 p-1" {...form.register("unitPrice", {
                             required: false,
                             setValueAs: (v) => parseInt(v)
                         })} />
