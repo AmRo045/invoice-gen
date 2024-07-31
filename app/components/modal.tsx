@@ -97,7 +97,7 @@ export default function Modal({ newPos, onAdd }: Props) {
                         <span>Einzelpreis</span>
                         <input type="text" className="border-2 rounded-lg ms-2 p-1" {...form.register("unitPrice", {
                             required: false,
-                            setValueAs: (v) => parseInt(v)
+                            setValueAs: (v) => parseFloat(v)
                         })} />
                     </div>
 
