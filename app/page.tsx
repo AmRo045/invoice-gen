@@ -182,7 +182,7 @@ export default function Home() {
                         />
                     </div>
                 </div>
-                <section className="w-a4 h-a4 mx-auto py-4" id="container" ref={contentRef}>
+                <section className="w-a4 h-a4 mx-auto" id="container" ref={contentRef}>
                     <div className="w-[640px] m-auto">
                         <div className="flex justify-end text-sm">
                             <div className="text-end">
