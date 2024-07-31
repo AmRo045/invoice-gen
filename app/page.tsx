@@ -186,10 +186,13 @@ export default function Home() {
                     <div className="w-[640px] m-auto">
                         <div className="flex justify-end text-sm">
                             <div className="text-end">
-                                <div>Datum : <span contentEditable={true}>{formatDate(invoice.invoiceDate)}</span></div>
+                                <div>Datum : <span contentEditable={true}
+                                                   suppressContentEditableWarning={true}>{formatDate(invoice.invoiceDate)}</span>
+                                </div>
                                 <div className="flex gap-1">
                                     <span>Rechnungs-Nr.:</span>
                                     <div contentEditable={true}
+                                         suppressContentEditableWarning={true}
                                          onInput={handleInvoiceNoChange}
                                          dangerouslySetInnerHTML={{
                                              __html: invoice.invoiceNo
@@ -198,7 +201,7 @@ export default function Home() {
                             </div>
                         </div>
 
-                        <div className="mt-[8rem]" contentEditable={true}>
+                        <div className="mt-[8rem]" contentEditable={true} suppressContentEditableWarning={true}>
                             <div>Firma Berg GMBH</div>
                             <div>HEIZUNG-KLIMA</div>
                             <div>SANITÄR KLEMPNER</div>
@@ -210,7 +213,7 @@ export default function Home() {
                             <strong className="font-semibold text-xl">Rechnung</strong>
                         </div>
 
-                        <div className="mb-4" contentEditable={true}>
+                        <div className="mb-4" contentEditable={true} suppressContentEditableWarning={true}>
                             <div>Sehr geehrte Damen und Herren,</div>
                             <div>ich danke Ihnen für die Beauftragung. Wie vereinbart</div>
                             <div>erhalten Sie die Rechnung für meine Leistung von 07.03.2024 bis 15.03.2024.</div>
@@ -274,14 +277,21 @@ export default function Home() {
                         <div className="px-1">
                             <div className="grid gap-5">
                                 {!invoice.hasTax &&
-                                    <div contentEditable={true}>Der Leistungsempfänger schuldet die Umsatzsteuer nach §
+                                    <div contentEditable={true} suppressContentEditableWarning={true}>Der
+                                        Leistungsempfänger schuldet die Umsatzsteuer nach §
                                         13b UStG.</div>}
 
                                 <div className="flex gap-1">
-                                    <div contentEditable={true}>Der Rechnungsbetrag</div>
+                                    <div contentEditable={true} suppressContentEditableWarning={true}>Der
+                                        Rechnungsbetrag
+                                    </div>
                                     <div>({formatCurrencyWithEurPostfix(invoice.total + invoice.taxAmount)})</div>
-                                    <div contentEditable={true}>ist fällig bis zum</div>
-                                    <div contentEditable={true}>{formatDate(invoice.invoiceDate)}.</div>
+                                    <div contentEditable={true} suppressContentEditableWarning={true}>ist fällig bis
+                                        zum
+                                    </div>
+                                    <div contentEditable={true}
+                                         suppressContentEditableWarning={true}>{formatDate(invoice.invoiceDate)}.
+                                    </div>
                                 </div>
                                 <div>
                                     <div>Mit freundlichen Grüßen.</div>
@@ -289,15 +299,20 @@ export default function Home() {
                                 </div>
                             </div>
 
-                            <div className="flex justify-between mt-[40px] text-sm" contentEditable={true}>
+                            <div className="flex justify-between mt-[40px] text-sm" contentEditable={true}
+                                 suppressContentEditableWarning={true}>
                                 <div>Bankverbindung:</div>
                                 <div>Steuernummer: 43/109/02528</div>
                             </div>
 
                             <div className="text-sm">
-                                <div contentEditable={true}>Sparkasse Stade-Altes Land</div>
-                                <div contentEditable={true}>BAN: DE69 2415 1005 1210 4192 20</div>
-                                <div contentEditable={true}>BIC: NOLADE21STS</div>
+                                <div contentEditable={true} suppressContentEditableWarning={true}>Sparkasse Stade-Altes
+                                    Land
+                                </div>
+                                <div contentEditable={true} suppressContentEditableWarning={true}>BAN: DE69 2415 1005
+                                    1210 4192 20
+                                </div>
+                                <div contentEditable={true} suppressContentEditableWarning={true}>BIC: NOLADE21STS</div>
                             </div>
                         </div>
                     </div>
