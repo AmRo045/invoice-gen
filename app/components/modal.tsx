@@ -66,7 +66,7 @@ export default function Modal({ newPos, onAdd }: Props) {
                         <span>Pos.</span>
                         <input type="number" className="border-2 rounded-lg ms-2 p-1" {...form.register("pos", {
                             required: false,
-                            setValueAs: (v) => parseInt(v)
+                            setValueAs: (v) => parseFloat(v)
                         })} />
                     </div>
 
@@ -74,7 +74,7 @@ export default function Modal({ newPos, onAdd }: Props) {
                         <span>Anzahl</span>
                         <input type="number" className="border-2 rounded-lg ms-2 p-1" {...form.register("hours", {
                             required: false,
-                            setValueAs: (v) => parseInt(v)
+                            setValueAs: (v) => parseFloat(v)
                         })} />
 
                     </div>
