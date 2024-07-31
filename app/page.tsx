@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactToPrint } from "react-to-print";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, SVGProps, useRef, useState } from "react";
 import Modal from "@/app/components/modal";
 
 const taxRate = 19;
@@ -38,14 +38,35 @@ interface Invoice {
     hasHours: boolean;
 }
 
-function InvoiceTableRow({ item, hasHours }: { item: InvoiceItem, hasHours: boolean }) {
+
+function IcBaselineDelete(props: SVGProps<SVGSVGElement>) {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+            <path fill="currentColor"
+                  d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z"></path>
+        </svg>
+    );
+}
+
+function InvoiceTableRow({ index, item, hasHours, onDelete }: {
+    index: number,
+    item: InvoiceItem,
+    hasHours: boolean,
+    onDelete: (index: number) => void
+}) {
     return <tr className="text-start">
+        <td className="text-center px-1 print:hidden">
+            <button onClick={() => onDelete(index)}
+                    className="bg-gray-300 text-gray-600 rounded-lg font-bold p-1 mt-1 hover:bg-gray-400 min-w-fit">
+                <IcBaselineDelete />
+            </button>
+        </td>
         <td className="text-center px-1">{item.pos}</td>
         <td className={`text-center px-1 ${hasHours ? "" : "line-through print:hidden"}`}>{item.hours}</td>
         <td className="text-center min-w-[70px]">{item.unit}</td>
         <td className="text-[#0070c0] text-start min-w-[60px]">{item.description}</td>
         <td className="text-[#0070c0] text-end">{formatCurrency(item.unitPrice)}</td>
-        <td className="text-[#0070c0] text-end pe-2">{formatCurrency(hasHours ? item.unitPrice * item.unitPrice : item.unitPrice)}</td>
+        <td className="text-[#0070c0] text-end pe-2">{formatCurrency(hasHours ? item.unitPrice * item.hours : item.unitPrice)}</td>
     </tr>;
 }
 
@@ -120,6 +141,18 @@ export default function Home() {
         setInvoiceItems(newInvoiceItems);
     };
 
+    const handleDelete = (index: number) => {
+        if (confirm("Are you sure?")) {
+            let newInvoiceItems = [...invoiceItems];
+            newInvoiceItems.splice(index, 1);
+
+            updateSummary(invoice, newInvoiceItems);
+
+            setInvoice({ ...invoice });
+            setInvoiceItems(newInvoiceItems);
+        }
+    };
+
     return (
         <>
             <title>{invoice.invoiceNo}</title>
@@ -187,6 +220,7 @@ export default function Home() {
                             <table className="w-full">
                                 <thead>
                                 <tr className="bg-[#e7e6e6] text-left px-2">
+                                    <th className="text-center px-1 font-normal print:hidden"></th>
                                     <th className="text-center px-1 font-normal">Pos.</th>
                                     <th className={`text-center font-normal ${invoice.hasHours ? "" : "print:hidden"}`}>
                                         <span className={invoice.hasHours ? "" : "line-through"}>Anzahl</span>
@@ -199,32 +233,42 @@ export default function Home() {
                                 </thead>
 
                                 <tbody>
-                                {invoiceItems.map((item) => <InvoiceTableRow item={item} hasHours={invoice.hasHours}
-                                                                             key={item.pos} />)}
+                                {invoiceItems.map((item, index) => <InvoiceTableRow
+                                    item={item} hasHours={invoice.hasHours}
+                                    index={index}
+                                    onDelete={handleDelete}
+                                    key={item.pos} />)}
                                 </tbody>
                             </table>
 
                             <div className="grid gap-3 mb-5 mt-[2.5rem]">
-                                <div className="flex justify-between px-2">
-                                    <span>Summe</span>
-                                    <span className="text-[#0070c0]">{formatCurrency(invoice.total)}</span>
-                                </div>
+
+                                {invoiceItems.length > 0 && (
+                                    <>
+                                        <div className="flex justify-between px-2">
+                                            <span>Summe</span>
+                                            <span className="text-[#0070c0]">{formatCurrency(invoice.total)}</span>
+                                        </div>
 
 
-                                {invoice.hasTax && (
-                                    <div
-                                        className={`flex justify-between px-2 ${invoice.hasTax ? "" : "print:hidden"}`}>
-                                        <span>Mehrwertsteuer 19% auf den Nettobedivag</span>
-                                        <span className="text-[#0070c0]">{formatCurrency(invoice.taxAmount)}</span>
-                                    </div>
+                                        {invoice.hasTax && (
+                                            <div
+                                                className={`flex justify-between px-2 ${invoice.hasTax ? "" : "print:hidden"}`}>
+                                                <span>Mehrwertsteuer 19% auf den Nettobedivag</span>
+                                                <span
+                                                    className="text-[#0070c0]">{formatCurrency(invoice.taxAmount)}</span>
+                                            </div>
+                                        )}
+
+                                        <div className="bg-[#e7e6e6] flex justify-between px-2">
+                                            <span className="">Gesamtbedivag</span>
+                                            <span
+                                                className="text-[#0070c0] font-bold">{formatCurrency(invoice.total + invoice.taxAmount)}</span>
+                                        </div>
+                                    </>
                                 )}
-
-                                <div className="bg-[#e7e6e6] flex justify-between px-2">
-                                    <span className="">Gesamtbedivag</span>
-                                    <span
-                                        className="text-[#0070c0] font-bold">{formatCurrency(invoice.total + invoice.taxAmount)}</span>
-                                </div>
                             </div>
+
                         </div>
 
                         <div className="px-1">

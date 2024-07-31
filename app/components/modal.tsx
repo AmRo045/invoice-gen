@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { InvoiceItem } from "@/app/page";
 
@@ -9,6 +9,7 @@ interface Props {
 
 export default function Modal({ newPos, onAdd }: Props) {
     const dialogRef = useRef<HTMLDialogElement | null>(null);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const form = useForm<InvoiceItem>({
         defaultValues: {
@@ -22,16 +23,19 @@ export default function Modal({ newPos, onAdd }: Props) {
         }
         form.reset();
         dialogRef.current?.close();
+        setIsOpen(false);
     };
 
     const openModal = () => {
         dialogRef.current?.showModal();
+        setIsOpen(true);
     };
 
     useEffect(() => {
         const handleBackdropClick = (event: MouseEvent) => {
             if (dialogRef.current && event.target === dialogRef.current) {
                 dialogRef.current?.close();
+                setIsOpen(false);
             }
         };
 
@@ -54,53 +58,56 @@ export default function Modal({ newPos, onAdd }: Props) {
         </button>
 
         <dialog ref={dialogRef} className="rounded-lg">
-            <form className="p-3" onSubmit={form.handleSubmit(actualSubmit)}>
-                <h1>Add record</h1>
-                <hr className="mb-3 mt-2" />
-                <div className="my-2 flex justify-between items-center">
-                    <span>Pos.</span>
-                    <input type="number" className="border-2 rounded-lg ms-2 p-1" {...form.register("pos", {
-                        required: false,
-                        setValueAs: (v) => parseInt(v)
-                    })} />
-                </div>
+            {isOpen && (
+                <form className="p-3" onSubmit={form.handleSubmit(actualSubmit)}>
+                    <h1>Add record</h1>
+                    <hr className="mb-3 mt-2" />
+                    <div className="my-2 flex justify-between items-center">
+                        <span>Pos.</span>
+                        <input type="number" className="border-2 rounded-lg ms-2 p-1" {...form.register("pos", {
+                            required: false,
+                            setValueAs: (v) => parseInt(v)
+                        })} />
+                    </div>
 
-                <div className="my-2 flex justify-between items-center">
-                    <span>Anzahl</span>
-                    <input type="number" className="border-2 rounded-lg ms-2 p-1" {...form.register("hours", {
-                        required: false,
-                        setValueAs: (v) => parseInt(v)
-                    })} />
+                    <div className="my-2 flex justify-between items-center">
+                        <span>Anzahl</span>
+                        <input type="number" className="border-2 rounded-lg ms-2 p-1" {...form.register("hours", {
+                            required: false,
+                            setValueAs: (v) => parseInt(v)
+                        })} />
 
-                </div>
+                    </div>
 
-                <div className="my-2 flex justify-between items-center">
-                    <span>Einheit</span>
-                    <input type="text" className="border-2 rounded-lg ms-2 p-1" {...form.register("unit", {
-                        required: false
-                    })} />
-                </div>
+                    <div className="my-2 flex justify-between items-center">
+                        <span>Einheit</span>
+                        <input type="text" className="border-2 rounded-lg ms-2 p-1" {...form.register("unit", {
+                            required: false
+                        })} />
+                    </div>
 
-                <div className="my-2 flex justify-between items-center">
-                    <span>Bezeichnung</span>
-                    <input type="text" className="border-2 rounded-lg ms-2 p-1" {...form.register("description", {
-                        required: false
-                    })} />
-                </div>
+                    <div className="my-2 flex justify-between items-center">
+                        <span>Bezeichnung</span>
+                        <input type="text" className="border-2 rounded-lg ms-2 p-1" {...form.register("description", {
+                            required: false
+                        })} />
+                    </div>
 
-                <div className="my-2 flex justify-between items-center">
-                    <span>Einzelpreis</span>
-                    <input type="number" className="border-2 rounded-lg ms-2 p-1" {...form.register("unitPrice", {
-                        required: false,
-                        setValueAs: (v) => parseInt(v)
-                    })} />
-                </div>
+                    <div className="my-2 flex justify-between items-center">
+                        <span>Einzelpreis</span>
+                        <input type="number" className="border-2 rounded-lg ms-2 p-1" {...form.register("unitPrice", {
+                            required: false,
+                            setValueAs: (v) => parseInt(v)
+                        })} />
+                    </div>
 
-                <hr className="my-3" />
+                    <hr className="my-3" />
 
-                <button className="w-full bg-black text-white p-2 rounded-lg font-bold py-2 px-4 hover:bg-gray-700">Add
-                </button>
-            </form>
+                    <button
+                        className="w-full bg-black text-white p-2 rounded-lg font-bold py-2 px-4 hover:bg-gray-700">Add
+                    </button>
+                </form>
+            )}
         </dialog>
     </>;
 }
