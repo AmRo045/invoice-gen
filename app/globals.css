@@ -15,14 +15,14 @@
         --background-end-rgb: 0, 0, 0;
     }
 }
- 
+
 body {
     color: rgb(var(--foreground-rgb));
 
     font-size: 0.93rem !important;
     background-color: white !important;
 
-    background-image: url("/headernew.jpg") !important;
+    background-image: url("https://amro045.github.io/invoice-gen/headernew.jpg") !important;
     background-size: cover;
     background-repeat: repeat-y;
     background-position: right top;
