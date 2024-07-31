@@ -77,7 +77,6 @@ export default function Home() {
         invoiceDate: new Date(2021, 11, 17),
         invoiceNo: 240005,
         total: 2975,
-        subtotal: 2500,
         hasTax: true,
         taxAmount: 475,
         hasHours: true
@@ -182,7 +181,7 @@ export default function Home() {
                         />
                     </div>
                 </div>
-                <section className="w-a4 h-a4 mx-auto" id="container" ref={contentRef}>
+                <section className="w-a4 h-a4 mx-auto pt-[60px]" id="container" ref={contentRef}>
                     <div className="w-[640px] m-auto">
                         <div className="flex justify-end text-sm">
                             <div className="text-end">
@@ -201,7 +200,7 @@ export default function Home() {
                             </div>
                         </div>
 
-                        <div className="mt-[8rem]" contentEditable={true} suppressContentEditableWarning={true}>
+                        <div className="mt-[4rem]" contentEditable={true} suppressContentEditableWarning={true}>
                             <div>Firma Berg GMBH</div>
                             <div>HEIZUNG-KLIMA</div>
                             <div>SANITÄR KLEMPNER</div>
