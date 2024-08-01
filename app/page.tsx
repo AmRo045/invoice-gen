@@ -194,7 +194,7 @@ export default function Home() {
                         />
                     </div>
                 </div>
-                <section className="w-a4 h-a4 mx-auto pt-[60px]" id="container" ref={contentRef}>
+                <section className="w-a4 h-a4 mx-auto pt-[20px]" id="container" ref={contentRef}>
                     <div className="w-[640px] m-auto">
                         <div className="flex justify-end text-sm">
                             <div className="text-end">
@@ -213,7 +213,7 @@ export default function Home() {
                             </div>
                         </div>
 
-                        <div className="mt-[4rem]" contentEditable={true} suppressContentEditableWarning={true}>
+                        <div className="mt-[6.6rem]" contentEditable={true} suppressContentEditableWarning={true}>
                             <div>Firma Berg GMBH</div>
                             <div>HEIZUNG-KLIMA</div>
                             <div>SANITÄR KLEMPNER</div>
@@ -257,7 +257,7 @@ export default function Home() {
                                 </tbody>
                             </table>
 
-                            <div className="grid gap-3 mb-5 mt-[2.5rem]">
+                            <div className="grid gap-3 mb-5 mt-[2rem]">
 
                                 {invoiceItems.length > 0 && (
                                     <>
@@ -284,11 +284,10 @@ export default function Home() {
                                     </>
                                 )}
                             </div>
-
                         </div>
 
                         <div className="px-1">
-                            <div className="grid gap-5">
+                            <div className="grid gap-3">
                                 {!invoice.hasTax &&
                                     <div contentEditable={true} suppressContentEditableWarning={true}>Der
                                         Leistungsempfänger schuldet die Umsatzsteuer nach §
@@ -312,7 +311,7 @@ export default function Home() {
                                 </div>
                             </div>
 
-                            <div className="flex justify-between mt-[40px] text-sm" contentEditable={true}
+                            <div className="flex justify-between mt-[30px] text-sm" contentEditable={true}
                                  suppressContentEditableWarning={true}>
                                 <div>Bankverbindung:</div>
                                 <div>Steuernummer: 43/109/02528</div>
