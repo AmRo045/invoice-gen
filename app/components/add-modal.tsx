@@ -46,13 +46,13 @@ export default function AddModal({ onAdd }: Props) {
                 dialogElement.removeEventListener("click", handleBackdropClick);
             }
         };
-    }, []);
+    }, [form]);
 
     useEffect(() => {
         if (!isOpen) {
             form.reset();
         }
-    }, [isOpen]);
+    }, [form, isOpen]);
 
     return <>
         <button
