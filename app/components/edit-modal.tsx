@@ -50,7 +50,7 @@ export default function EditModal({ index, data, onSubmit }: Props) {
                 dialogElement.removeEventListener("click", handleBackdropClick);
             }
         };
-    }, []);
+    }, [form]);
 
     useEffect(() => {
         if (!isOpen) {
@@ -58,7 +58,7 @@ export default function EditModal({ index, data, onSubmit }: Props) {
         }
 
         form.reset(data);
-    }, [isOpen]);
+    }, [form, isOpen, data]);
 
     return <>
         <button onClick={openModal}

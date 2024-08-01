@@ -6,7 +6,7 @@ interface Props {
     onAdd: (record: InvoiceItem) => void;
 }
 
-export default function Modal({ onAdd }: Props) {
+export default function AddModal({ onAdd }: Props) {
     const dialogRef = useRef<HTMLDialogElement | null>(null);
     const [isOpen, setIsOpen] = useState<boolean>(false);
 

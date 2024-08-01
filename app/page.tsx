@@ -2,7 +2,7 @@
 
 import { ReactToPrint } from "react-to-print";
 import { ChangeEvent, SVGProps, useRef, useState } from "react";
-import Modal from "@/app/components/modal";
+import AddModal from "@/app/components/add-modal";
 import EditModal from "@/app/components/edit-modal";
 
 const taxRate = 19;
@@ -195,7 +195,7 @@ export default function Home() {
                             </label>
                         </div>
 
-                        <Modal onAdd={handleAdd} />
+                        <AddModal onAdd={handleAdd} />
 
                         <ReactToPrint
                             trigger={() => <button
