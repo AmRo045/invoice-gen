@@ -3,6 +3,7 @@
 import { ReactToPrint } from "react-to-print";
 import { ChangeEvent, SVGProps, useRef, useState } from "react";
 import Modal from "@/app/components/modal";
+import EditModal from "@/app/components/edit-modal";
 
 const taxRate = 19;
 
@@ -22,7 +23,6 @@ const formatDate = (date) => {
 };
 
 export interface InvoiceItem {
-    pos: number;
     hours: number;
     unit: string;
     description: string;
@@ -39,7 +39,7 @@ interface Invoice {
 }
 
 
-function IcBaselineDelete(props: SVGProps<SVGSVGElement>) {
+function DeleteIcon(props: SVGProps<SVGSVGElement>) {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}>
             <path fill="currentColor"
@@ -48,20 +48,35 @@ function IcBaselineDelete(props: SVGProps<SVGSVGElement>) {
     );
 }
 
-function InvoiceTableRow({ index, item, hasHours, onDelete }: {
-    index: number,
-    item: InvoiceItem,
-    hasHours: boolean,
-    onDelete: (index: number) => void
+
+export function EditIcon(props: SVGProps<SVGSVGElement>) {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+            <path fill="currentColor"
+                  d="M10 14v-2.615l8.944-8.944q.166-.166.348-.23t.385-.063q.189 0 .368.064t.326.21L21.483 3.5q.16.166.242.365t.083.4t-.061.382q-.06.18-.226.345L12.52 14zm9.466-8.354l1.347-1.361l-1.111-1.17l-1.387 1.381zM5.615 20q-.691 0-1.153-.462T4 18.384V5.616q0-.691.463-1.153T5.616 4h8.386l-6.386 6.387v5.998h5.896L20 9.895v8.489q0 .69-.462 1.153T18.384 20z"></path>
+        </svg>
+    );
+}
+
+function InvoiceTableRow({ index, item, hasHours, onDelete, onEdit }: {
+    index: number;
+    item: InvoiceItem;
+    hasHours: boolean;
+    onDelete: (index: number) => void;
+    onEdit: (index: number, item: InvoiceItem) => void;
 }) {
     return <tr className="text-start">
-        <td className="text-center px-1 print:hidden">
-            <button onClick={() => onDelete(index)}
-                    className="bg-gray-300 text-gray-600 rounded-lg font-bold p-1 mt-1 hover:bg-gray-400 min-w-fit">
-                <IcBaselineDelete />
-            </button>
+        <td className="text-center px-1 print:hidden relative py-4">
+            <div className="flex gap-1 items-center absolute left-[-3.8rem] top-0">
+                <button onClick={() => onDelete(index)}
+                        className="bg-gray-300 text-gray-600 rounded-lg font-bold p-1 mt-1 hover:bg-gray-400 min-w-fit">
+                    <DeleteIcon />
+                </button>
+
+                <EditModal index={index} data={item} onSubmit={onEdit} />
+            </div>
         </td>
-        <td className="text-center px-1">{item.pos}</td>
+        <td className="text-center px-1">{index + 1}</td>
         <td className={`text-center px-1 ${hasHours ? "" : "line-through print:hidden"}`}>{item.hours}</td>
         <td className="text-center min-w-[70px]">{item.unit}</td>
         <td className="text-[#0070c0] text-start min-w-[60px]">{item.description}</td>
@@ -84,7 +99,6 @@ export default function Home() {
 
     const [invoiceItems, setInvoiceItems] = useState<InvoiceItem[]>([
         {
-            pos: 1,
             hours: 50,
             unit: "Std.",
             description: "Installation services",
@@ -127,7 +141,6 @@ export default function Home() {
 
     const handleAdd = (record: InvoiceItem) => {
         const newInvoiceItems = [...invoiceItems, {
-            pos: record.pos,
             hours: record.hours,
             unit: record.unit,
             description: record.description,
@@ -140,9 +153,19 @@ export default function Home() {
         setInvoiceItems(newInvoiceItems);
     };
 
+    const handleEdit = (index: number, item: InvoiceItem) => {
+        const newInvoiceItems = [...invoiceItems];
+        newInvoiceItems[index] = item;
+
+        updateSummary(invoice, newInvoiceItems);
+
+        setInvoice({ ...invoice });
+        setInvoiceItems(newInvoiceItems);
+    };
+
     const handleDelete = (index: number) => {
         if (confirm("Are you sure?")) {
-            let newInvoiceItems = [...invoiceItems];
+            const newInvoiceItems = [...invoiceItems];
             newInvoiceItems.splice(index, 1);
 
             updateSummary(invoice, newInvoiceItems);
@@ -172,7 +195,7 @@ export default function Home() {
                             </label>
                         </div>
 
-                        <Modal onAdd={handleAdd} newPos={invoiceItems.length + 1} />
+                        <Modal onAdd={handleAdd} />
 
                         <ReactToPrint
                             trigger={() => <button
@@ -239,7 +262,8 @@ export default function Home() {
                                     item={item} hasHours={invoice.hasHours}
                                     index={index}
                                     onDelete={handleDelete}
-                                    key={item.pos} />)}
+                                    onEdit={handleEdit}
+                                    key={index} />)}
                                 </tbody>
                             </table>
 
