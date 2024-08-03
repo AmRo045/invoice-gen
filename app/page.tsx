@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactToPrint } from "react-to-print";
-import { ChangeEvent, SVGProps, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, SVGProps, useRef, useState } from "react";
 import AddModal from "@/app/components/add-modal";
 import EditModal from "@/app/components/edit-modal";
 
@@ -31,7 +31,7 @@ export interface InvoiceItem {
 
 interface Invoice {
     invoiceDate: Date;
-    invoiceNo: number;
+    invoiceNo: string;
     total: number;
     hasTax: boolean;
     taxAmount: number;
@@ -80,7 +80,7 @@ export default function Home() {
 
     const [invoice, setInvoice] = useState<Invoice>({
         invoiceDate: new Date(2021, 11, 17),
-        invoiceNo: 240005,
+        invoiceNo: "240005",
         total: 2975,
         hasTax: true,
         taxAmount: 475,
@@ -108,9 +108,9 @@ export default function Home() {
         }
     };
 
-    const handleInvoiceNoChange = (e: ChangeEvent<HTMLDivElement>) => {
-        const el = e.target as HTMLDivElement;
-        setInvoice({ ...invoice, ...{ invoiceNo: parseInt(el.innerText) } });
+    const handleInvoiceNoChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const el = e.target as HTMLInputElement;
+        setInvoice({ ...invoice, invoiceNo: el.value });
     };
 
     const handleTableColHoursToggle = (e: ChangeEvent<HTMLInputElement>) => {
@@ -165,6 +165,16 @@ export default function Home() {
         }
     };
 
+    const adjustInputWidth = (e: FormEvent<HTMLInputElement>) => {
+        const input = e.target as HTMLInputElement;
+        const span = document.getElementById("hidden-span") as HTMLSpanElement;
+
+        if (span) {
+            span.innerText = input.value || " ";
+            input.style.width = `${span.offsetWidth}px`;
+        }
+    };
+
     return (
         <>
             <title>{invoice.invoiceNo}</title>
@@ -201,14 +211,16 @@ export default function Home() {
                                 <div>Datum : <span contentEditable={true}
                                                    suppressContentEditableWarning={true}>{formatDate(invoice.invoiceDate)}</span>
                                 </div>
-                                <div className="flex gap-1">
+                                <div className="flex gap-1 items-center">
                                     <span>Rechnungs-Nr.:</span>
-                                    <div contentEditable={true}
-                                         suppressContentEditableWarning={true}
-                                         onInput={handleInvoiceNoChange}
-                                         dangerouslySetInnerHTML={{
-                                             __html: invoice.invoiceNo
-                                         }}></div>
+                                    <div className="inline-flex items-center">
+                                        <span id="hidden-span" className="invisible absolute whitespace-pre"></span>
+                                        <input type="text"
+                                               className="w-[47px]"
+                                               defaultValue={invoice.invoiceNo}
+                                               onInput={handleInvoiceNoChange}
+                                               onInputCapture={adjustInputWidth} />
+                                    </div>
                                 </div>
                             </div>
                         </div>
